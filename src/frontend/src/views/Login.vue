@@ -1,18 +1,33 @@
 <template>
     <div class="login-page">
         <div class="form">
-            <form class="register-form">
-                <input type="text" placeholder="name" />
-                <input type="password" placeholder="password" />
-                <input type="text" placeholder="email address" />
+            <form class="register-form" v-show="!login">
+                <input class="error-input" type="text" placeholder="username" v-model="username" @blur="v$.username.$touch"/>
+                <div class="error-div">
+                  <p class="error-text" v-show="v$.username.$error">Se necesita nombre</p>
+                </div>
+                <input class="error-input" type="password" placeholder="password" v-model="password" @blur="v$.password.$touch"/>
+                <div class="error-div">
+                  <p class="error-text" v-show="v$.password.$error">Se necesita contraseña</p>
+                </div>
+                <input class="error-input" type="text" placeholder="email address" v-model="email" @blur="v$.email.$touch"/>
+                <div class="error-div">
+                  <p class="error-text" v-show="v$.email.$error">Se necesita correo</p>
+                </div>
                 <button>create</button>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
+                <p class="message">Already registered? <a href="#" @click="changeClean">Sign In</a></p>
             </form>
-            <form class="login-form">
+            <form class="login-form" v-show="login">
                 <input type="text" placeholder="username" />
+                <div class="error-div">
+                  <p class="error-text" v-show="false">Usuario ingresado no existe</p>
+                </div>
                 <input type="password" placeholder="password" />
+                <div class="error-div">
+                  <p class="error-text" v-show="false">La contraseña no coincide con el usuario</p>
+                </div>
                 <button>login</button>
-                <p class="message">Not registered? <a href="#">Create an account</a></p>
+                <p class="message">Not registered? <a href="#" @click="login = !login">Create an account</a></p>
                 <a href="/Task">A las tareas</a>
             </form>
         </div>
@@ -26,6 +41,16 @@
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
+}
+.error-div{
+  height: 15px;
+}
+.error-text{
+  font-size: 75%;
+  color: #eb2f06;
+  margin: 0;
+  text-align: left;
+  line-height: 1;
 }
 .form {
   position: relative;
@@ -44,7 +69,6 @@
   background: #f2f2f2;
   width: 100%;
   border: 0;
-  margin: 0 0 15px;
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
@@ -76,7 +100,7 @@
   text-decoration: none;
 }
 .form .register-form {
-  display: none;
+  display: block;
 }
 body {
   background-color: #fbfff1;
@@ -87,6 +111,45 @@ body {
 </style>
 
 <script>
+
+/*
+  ######## VALIDACIONES ##############3
+*/
+
+  import { useVuelidate } from '@vuelidate/core'
+  import { required, email } from '@vuelidate/validators'
+
+  export default {
+    setup () {
+      return { v$:  useVuelidate() }
+    },
+    data () {
+      return {
+        username: '',
+        email: '',
+        password: '',
+        login: true,
+      }
+    },
+    validations () {
+      return {
+        username: {required},
+        email: {required, email},
+        password: {required},
+      }
+    },
+    methods: {
+      changeClean () {
+        this.login = !this.login
+        this.v$.$reset()
+      }
+    }
+  }
+
+
+/*
+  ###### FIN VALIDACIONES ##########
+*/
 // Obtener todos los elementos con la clase "message a"
 var messageLinks = document.querySelectorAll('.message a');
 
