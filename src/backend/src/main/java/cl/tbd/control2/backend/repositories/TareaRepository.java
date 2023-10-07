@@ -1,9 +1,13 @@
 package cl.tbd.control2.backend.repositories;
 
-import cl.tbd.control2.backend.entities.TareaEntity;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-public interface TareaRepository extends CrudRepository<TareaEntity, Long>{
+import cl.tbd.control2.backend.entities.TareaEntity;
+
+public interface TareaRepository {
+    List<TareaEntity> getAllTareas();
+    TareaEntity getTareaById(Long id);
+    void createTarea(TareaEntity tarea);
+    void updateTarea(TareaEntity tarea);
+    void deleteTarea(Long id);
 }

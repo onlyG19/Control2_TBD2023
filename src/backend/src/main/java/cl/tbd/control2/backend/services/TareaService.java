@@ -4,28 +4,46 @@ import cl.tbd.control2.backend.entities.TareaEntity;
 import cl.tbd.control2.backend.repositories.TareaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import java.util.List;
 
+@RestController
 @Service
 public class TareaService {
 
     @Autowired
     private TareaRepository tareaRepository;
 
-    public TareaEntity crear(TareaEntity tareaEntity){
-        return tareaRepository.save(tareaEntity);
+    @GetMapping("/tareas")
+    public List<TareaEntity> obtenerTodasLasTareas() {
+        return tareaRepository.getAllTareas();
     }
 
-    public Iterable<TareaEntity> obtenerTodos() {
-        return tareaRepository.findAll();
+    @GetMapping("/tarea/{id}")
+    public TareaEntity obtenerTareaPorId(@PathVariable Long id) {
+        return tareaRepository.getTareaById(id);
     }
 
-    public Optional<TareaEntity> obtenerPorID(Long id){
-        return tareaRepository.findById(id);
+    @PostMapping("/tarea")
+    public void crearTarea(@RequestBody TareaEntity tarea) {
+        tareaRepository.createTarea(tarea);
     }
 
-    public void eliminarPorID(Long id){
-        tareaRepository.deleteById(id);
+    @PutMapping("/tarea/{id}")
+    public void actualizarTarea(@PathVariable Long id, @RequestBody TareaEntity tarea) {
+        tarea.setId_tarea(id);
+        tareaRepository.updateTarea(tarea);
+    }
+
+    @DeleteMapping("/tarea/{id}")
+    public void eliminarTareaPorId(@PathVariable Long id) {
+        tareaRepository.deleteTarea(id);
     }
 }
