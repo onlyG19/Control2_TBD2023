@@ -2,15 +2,16 @@ package cl.tbd.control2.backend.services;
 
 import java.util.List;
 
-import cl.tbd.control2.backend.entities.Registration;
-import cl.tbd.control2.backend.entities.UsuarioRegisterResponse;
+import cl.tbd.control2.backend.entities.*;
+import cl.tbd.control2.backend.security.TokenUtils;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import cl.tbd.control2.backend.entities.UsuarioEntity;
 import cl.tbd.control2.backend.repositories.UsuarioRepository;
 
 @RestController
@@ -65,14 +66,45 @@ public class UsuarioService {
             response.setError(false);
             response.setMessage("El usuario se creo correctamente");
             response.setUsuario(usuario);
+            return ResponseEntity.ok(response);
         }
         else{
             response.setError(true);
             response.setMessage("El usuario ya existe!");
             response.setUsuario(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        return ResponseEntity.ok(response);
 
+
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioLoginResponse> loginUsuario(@RequestBody LoginRequest loginRequest){
+        // Buscar el usuario por nombre de usuario en la base de datos
+        UsuarioEntity usuario = usuarioRepository.findOneByUsername(loginRequest.getNombre());
+        UsuarioLoginResponse response = new UsuarioLoginResponse();
+
+        if(usuario != null &&
+                new BCryptPasswordEncoder().matches(loginRequest.getPassword(), usuario.getContrasenia_usuario())) {
+            // El usuario existe y la contraseña coincide
+
+            String token = TokenUtils.createToken(usuario.getNombre_usuario());
+
+            // Configurar la respuesta con el token y otros datos necesarios
+            response.setError(false);
+            response.setMessage("Inicio de sesión exitoso");
+            response.setToken(token);
+            response.setUsuario(usuario);
+            return ResponseEntity.ok(response);
+
+        } else {
+            // El usuario no existe o la contraseña es incorrecta
+            response.setError(true);
+            response.setMessage("Credenciales de inicio de sesión no válidas");
+            response.setToken(null);
+            response.setUsuario(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
     }
 
 }

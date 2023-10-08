@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @AllArgsConstructor
@@ -27,11 +28,22 @@ public class WebSecurityConfig {
 
         JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(authManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("usuario/login");
+
+        // Configuración CORS para permitir cualquier origen
+        http.cors().configurationSource(request -> {
+            CorsConfiguration corsConfig = new CorsConfiguration();
+            corsConfig.addAllowedOrigin("*"); // Permite solicitudes desde cualquier origen
+            corsConfig.addAllowedMethod("*");
+            corsConfig.addAllowedHeader("*");
+            return corsConfig;
+        });
+
+
         return http
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/usuario/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/register", "usuario/login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint())
