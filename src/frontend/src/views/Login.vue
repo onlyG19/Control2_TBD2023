@@ -4,7 +4,7 @@
             <form class="register-form" v-show="!login">
                 <input class="error-input" type="text" placeholder="username" v-model="username" @blur="v$.username.$touch"/>
                 <div class="error-div">
-                  <p class="error-text" v-show="v$.username.$error">Se necesita nombre</p>
+                  <p class="error-text" v-show="v$.username.$error">Se necesita nombre de usario</p>
                 </div>
                 <input class="error-input" type="password" placeholder="password" v-model="password" @blur="v$.password.$touch"/>
                 <div class="error-div">
@@ -14,7 +14,7 @@
                 <div class="error-div">
                   <p class="error-text" v-show="v$.email.$error">Se necesita correo</p>
                 </div>
-                <button>create</button>
+                <button @click.prevent="registerUser" >create</button>
                 <p class="message">Already registered? <a href="#" @click="changeClean">Sign In</a></p>
             </form>
             <form class="login-form" v-show="login">
@@ -118,6 +118,7 @@ body {
 
   import { useVuelidate } from '@vuelidate/core'
   import { required, email } from '@vuelidate/validators'
+  import axios from 'axios'
 
   export default {
     setup () {
@@ -139,9 +140,22 @@ body {
       }
     },
     methods: {
-      changeClean () {
+      async changeClean () {
         this.login = !this.login
         this.v$.$reset()
+      },
+
+      async registerUser (){
+        let json = {
+          nombre_usuario: this.username,
+          contrasenia_usuario: this.password
+        };
+        try {
+          const response = await axios.post('http://localhost:8080/usuario', json);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   }
