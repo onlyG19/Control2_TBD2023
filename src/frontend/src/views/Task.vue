@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
     <Header />
-    <TaskList />
+    <span v-for="(task, index) in tasks" :key="index">
+      <TaskList :task="task"/>
+    </span>
     <Footer />
   </div>
 </template>
@@ -10,6 +12,7 @@
 import Header from "@/components/Header.vue";
 import TaskList from "@/components/TaskList.vue";
 import Footer from "@/components/Footer.vue";
+import axios from 'axios';
 
 export default {
   components: {
@@ -17,6 +20,28 @@ export default {
     TaskList,
     Footer,
   },
+  data () {
+    return {
+      id: 10,
+      tasks: []
+    }
+  },
+
+  methods: {
+    async get_tasks(){
+      try {
+        const response = await axios.get(`http://localhost:8080/tareas/${this.id}`);
+        this.tasks = response.data;
+      } catch (error){
+        console.log(error);
+      }
+    },
+
+  },
+
+  mounted () {
+    this.get_tasks();
+  }
 };
 </script>
 

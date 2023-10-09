@@ -29,7 +29,24 @@ public class TareaRepositoryImp implements TareaRepository {
             throw new RuntimeException("Error al obtener todas las tareas", e);
         }
     }
-    
+
+    @Override
+    public List<TareaEntity> getAllTareasByUserId(Long userId) {
+        String sql = "SELECT * FROM tarea WHERE id_usuario_tarea = :userId";
+        List<TareaEntity> listaTareas;
+
+        try (Connection conn = sql2o.open()) {
+            listaTareas = conn.createQuery(sql)
+                    .addParameter("userId", userId)
+                    .executeAndFetch(TareaEntity.class);
+
+            return listaTareas;
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Error al obtener las tareas del usuario", e);
+        }
+    }
+
     @Override
     public TareaEntity getTareaById(Long id) {
         String sql = "SELECT * FROM tarea WHERE id_tarea = :id";

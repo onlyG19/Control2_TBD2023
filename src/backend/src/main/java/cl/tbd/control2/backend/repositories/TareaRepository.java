@@ -7,6 +7,7 @@ import cl.tbd.control2.backend.entities.TareaEntity;
 public interface TareaRepository {
     List<TareaEntity> getAllTareas();
     TareaEntity getTareaById(Long id);
+    List<TareaEntity> getAllTareasByUserId(Long userId);
     void createTarea(TareaEntity tarea);
     void updateTarea(TareaEntity tarea);
     void deleteTarea(Long id);
