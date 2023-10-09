@@ -44,6 +44,9 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, "/usuario/register", "usuario/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/tareas/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/tarea/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/tarea/**").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint())

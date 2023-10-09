@@ -165,6 +165,10 @@ export default {
           const token = response.data.token;
           localStorage.setItem("token", token); // Almacena el token en localStorage
 
+
+          // Almacena la informacion del uusario en sessionStorage
+          sessionStorage.setItem("user",JSON.stringify(response.data.usuario))
+
           // Redirige al usuario a la página principal o a donde desees después del inicio de sesión
           // Puedes usar Vue Router para manejar la navegación
           this.$router.push("/task"); // Reemplaza '/dashboard' con la ruta de tu página principal

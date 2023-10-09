@@ -67,7 +67,13 @@
           this.task.vence_tarea = this.date;
           this.task.desc_tarea = this.description;
           try {
-            axios.put(`http://localhost:8080/tarea/${this.task.id_tarea}`, this.task);
+
+            const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
+            axios.put(`http://localhost:8080/tarea/${this.task.id_tarea}`, this.task,{
+              headers: {
+              Authorization: `Bearer ${token}`,
+              }
+              });
           } catch (e){
             console.log(e);
           }
@@ -88,7 +94,13 @@
           this.textoBotonEdicion = 'Editar'
         }else{
           try{
-            axios.delete(`http://localhost:8080/tarea/${this.task.id_tarea}`)
+            const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
+
+            axios.delete(`http://localhost:8080/tarea/${this.task.id_tarea}`,{
+            headers: {
+            Authorization: `Bearer ${token}`,
+          }
+          });
             this.eliminado = true;
           }catch (e){
             console.log(e);
