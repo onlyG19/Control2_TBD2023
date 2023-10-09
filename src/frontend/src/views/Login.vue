@@ -4,6 +4,14 @@
       <div class="form">
         <form class="register-form" v-show="!login">
           <h1 class="title">Registro</h1>
+
+          <div v-if="showMessage" :class="messageClass">
+              {{ messageText }}
+    
+          </div>
+
+
+
           <input
             class="error-input"
             type="text"
@@ -87,7 +95,10 @@ export default {
       password: "",
       login: true,
       usernamel: "",
-      passwordl:""
+      passwordl:"",
+      showMessage: false,
+      messageText: "",
+      messageClass: "",
     };
   },
   validations() {
@@ -110,18 +121,30 @@ export default {
       };
       try {
         const response = await axios.post("/usuario/register", userData);
-        if (response.status == 200) {
+        if (response.status == 200) {  // Registro Exitoso
           console.log("Registro exitoso, status 200");
           console.log(response);
           console.log(response.data.message);
           console.log("Error? : " + response.data.error);
+
+          this.showMessage= true;
+          this.messageText= "Registro exitoso.";
+          this.messageClass= "success-message";
+
         } else {
           console.error("Error en el registro");
+          this.showMessage = true;
+          this.messageText = "Error en el registro. Por favor, inténtalo de nuevo.";
+          this.messageClass = "error-message";
         }
       } catch (error) {
         console.log("Error en la solicitud, error");
         console.log(error.response.data.message);
         console.log("Error? : " + error.response.data.error);
+        this.showMessage = true;
+        this.messageText = "Error en el registro. Por favor, inténtalo de nuevo.";
+        this.messageClass = "error-message";
+
       }
     },
 
@@ -260,6 +283,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #fbfff1;
   text-shadow: 3px 1px 2px rgba(0,0,0,0.47);
+}
+
+.success-message {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.error-message {
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
 }
 
 </style>
