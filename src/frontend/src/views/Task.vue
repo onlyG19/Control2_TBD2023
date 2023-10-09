@@ -20,12 +20,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .app-container {
   background-image: url("@/assets/fondo.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  min-height: 100vh;
+  flex-direction: column;
+  display: flex;
   /* Otros estilos de diseño si es necesario */
 }
 </style>

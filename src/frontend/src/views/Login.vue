@@ -18,11 +18,11 @@
                 <p class="message">Already registered? <a href="#" @click="changeClean">Sign In</a></p>
             </form>
             <form class="login-form" v-show="login">
-                <input type="text" placeholder="username" />
+                <input type="text" placeholder="username" v-model="usernamel"/>
                 <div class="error-div">
                   <p class="error-text" v-show="false">Usuario ingresado no existe</p>
                 </div>
-                <input type="password" placeholder="password" />
+                <input type="password" placeholder="password" v-model="passwordl"/>
                 <div class="error-div">
                   <p class="error-text" v-show="false">La contraseña no coincide con el usuario</p>
                 </div>
@@ -129,6 +129,8 @@ body {
         username: '',
         email: '',
         password: '',
+        usernamel: '',
+        passwordl: '',
         login: true,
       }
     },
@@ -152,6 +154,19 @@ body {
         };
         try {
           const response = await axios.post('http://localhost:8080/usuario', json);
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      async loginUser () {
+        let json = {
+          nombre_usuario: this.usernamel,
+          contrasenia_usuario: this.passwordl
+        };
+        try {
+          const response = await axios.post('http://localhost:8080/login', json);
           console.log(response.data);
         } catch (error) {
           console.log(error);
