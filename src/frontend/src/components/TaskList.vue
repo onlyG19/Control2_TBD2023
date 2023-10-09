@@ -1,47 +1,102 @@
 <template>
     <!-- Contenedor de tareas -->
-    <section class="container">
+    <section v-if="!eliminado" class="container">
       <!-- Iterar a través de las tareas -->
-      <article v-for="(task, index) in tasks" :key="index">
+      <article>
         <!-- Título de la tarea -->
-        <h2 :style="taskTitleStyle">{{ task.title }}</h2>
+        <h2 v-show="!edicion" :style="taskTitleStyle">{{ title }}</h2>
+        <input v-show="edicion" :style="taskTitleStyle" type="text" v-model="title" />
         <!-- Estado de la tarea -->
-        <p :style="taskStatusStyle">{{ task.status }}</p>
+        <p :style="taskStatusStyle">{{ status }}</p>
         <!-- Fecha de la tarea si está presente -->
-        <p v-if="task.date">{{ task.date }}</p>
+        <p v-if="task.vence_tarea">{{ date }}</p>
         <!-- Descripción de la tarea -->
-        <p>{{ task.description }}</p>
+        <p v-show="!edicion">{{ description }}</p>
+        <textarea v-show="edicion" type="text" v-model="description" @input="autosize" ref="textarea"></textarea>
         <!-- Botones de edición y eliminación -->
         <div class="container">
-          <button class="edit" :style="editButtonStyle">Editar</button>
-          <button class="delete" :style="deleteButtonStyle">Eliminar</button>
+          <button class="edit" :style="editButtonStyle" @click="edit">{{ textoBotonEdicion }}</button>
+          <button class="delete" :style="deleteButtonStyle" @click="eliminar">{{ textoBotonEliminar }}</button>
         </div>
       </article>
     </section>
   </template>
       
-  <script>
+<script>
+  import axios from 'axios'
+
   export default {
     name: "TaskList",
+    props: {
+      task: {
+        type: Object,
+        required: true
+      },
+    },
     data() {
       return {
-        tasks: [
-          {
-            title: "Tarea 1:",
-            status: "Pendiente",
-            date: "yyyy/mm/dd",
-            description: "Hacer x"
-          },
-          {
-            title: "Tarea 2:",
-            status: "Completada",
-            date: "yyyy/mm/dd",
-            description: "Hacer y"
-          },
-          // Puedes agregar más tareas aquí
-        ],
-      };
+        edicion: false,
+        eliminado: false,
+        textoBotonEdicion: 'Editar',
+        textoBotonEliminar: 'Eliminar',
+        title: '',
+        status: '',
+        date: '',
+        description: '',
+      }
     },
+    mounted () {
+      this.title = this.task.nombre_tarea;
+      this.status = this.task.estado_tarea;
+      this.date = this.task.vence_tarea;
+      this.description = this.task.desc_tarea;
+    },
+    // reutilizacion de botones al cambiar la funcion por la edicion
+    methods: {
+      autosize() {
+        // ajustar el textarea al tamaño del contenido
+        let element = this.$refs["textarea"];
+        element.style.height = "18px";
+        element.style.height = element.scrollHeight + "px";
+    },
+      edit () {
+        if(this.edicion){
+          this.textoBotonEdicion = 'Editar'
+          this.task.nombre_tarea = this.title;
+          this.task.estado_tarea = this.status;
+          this.task.vence_tarea = this.date;
+          this.task.desc_tarea = this.description;
+          try {
+            axios.put(`http://localhost:8080/tarea/${this.task.id_tarea}`, this.task);
+          } catch (e){
+            console.log(e);
+          }
+        }else {
+          this.textoBotonEdicion = 'Guardar';
+          this.textoBotonEliminar = 'Cancelar';
+        }
+        this.edicion = !this.edicion;
+    },
+      eliminar (){
+        if(this.edicion){
+          this.title = this.task.nombre_tarea;
+          this.status = this.task.estado_tarea;
+          this.date = this.task.vence_tarea;
+          this.description = this.task.desc_tarea;
+          this.textoBotonEliminar = 'Eliminar';
+          this.edicion = !this.edicion;
+          this.textoBotonEdicion = 'Editar'
+        }else{
+          try{
+            axios.delete(`http://localhost:8080/tarea/${this.task.id_tarea}`)
+            this.eliminado = true;
+          }catch (e){
+            console.log(e);
+          }
+        }
+      },
+
+  },
     computed: {
       // Estilos de la fuente para el título de la tarea
       taskTitleStyle() {
@@ -87,10 +142,14 @@
   }
   
   section article h2,
-  section article p {
+  section article p{
     margin: 1.2rem;
   }
-  
+
+  p{
+    font-size: 15px;
+  }
+
   .container {
     width: 400px;
     margin: 0 auto;
@@ -99,7 +158,28 @@
   .delete {
     background: #3c3744;
   }
-  
+
+  input,
+  textarea{
+    outline: none;
+    width: 90%;
+  }
+
+  input{
+    margin: 0.8em 0.8em 0 0.8em;
+    font-size: 22px;
+
+  }
+
+  textarea{
+    margin: 0 0.8em 0.8em 0.8em;
+    height: auto;
+    min-height: 20px;
+    overflow-y: hidden;
+    resize: none;
+    font-size: 13px;
+  }
+
   button {
     font-family: "NuevaFuente, sans-serif"; /* Cambio de fuente */
     text-transform: uppercase;
@@ -120,9 +200,7 @@
     background: #3c3744;
   }
   
-  button:hover,
-  button:active,
-  button:focus {
+  button:hover {
     background: #090c9b;
   }
   
