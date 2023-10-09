@@ -28,9 +28,7 @@
 
 </script>
 
-<style>
-
-
+<style scoped>
 header {
   color: #fbfff1;
   background-color: #3066be;
