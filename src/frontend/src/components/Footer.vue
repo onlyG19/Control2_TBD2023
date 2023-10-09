@@ -17,7 +17,7 @@
     text-align: center;
     padding: 1rem;
     color: #fbfff1;
+    margin-top: auto;
     font-family: "NuevaFuente, sans-serif"; /* Cambia "NuevaFuente" a la fuente que desees */
   }
   </style>
-  

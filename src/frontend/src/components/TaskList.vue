@@ -75,7 +75,7 @@
   };
   </script>
       
-  <style scoped>
+  <style>
   /* Estilos específicos para el componente TaskList */
   section article {
     color: black;
@@ -130,4 +130,3 @@
     display: block;
   }
   </style>
-  
