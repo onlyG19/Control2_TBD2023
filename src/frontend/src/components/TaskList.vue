@@ -20,7 +20,7 @@
         </div>
       </article>
     </section>
-  </template>
+</template>
       
 <script>
   import axios from 'axios'
@@ -42,7 +42,7 @@
         title: '',
         status: '',
         date: '',
-        description: '',
+        description: ''
       }
     },
     mounted () {
@@ -62,18 +62,18 @@
       edit () {
         if(this.edicion){
           this.textoBotonEdicion = 'Editar'
+          this.textoBotonEliminar = 'Eliminar'
           this.task.nombre_tarea = this.title;
           this.task.estado_tarea = this.status;
           this.task.vence_tarea = this.date;
           this.task.desc_tarea = this.description;
           try {
-
             const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
             axios.put(`http://localhost:8080/tarea/${this.task.id_tarea}`, this.task,{
               headers: {
-              Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
               }
-              });
+            });
           } catch (e){
             console.log(e);
           }
@@ -98,8 +98,8 @@
 
             axios.delete(`http://localhost:8080/tarea/${this.task.id_tarea}`,{
             headers: {
-            Authorization: `Bearer ${token}`,
-          }
+              Authorization: `Bearer ${token}`,
+            }
           });
             this.eliminado = true;
           }catch (e){
@@ -140,15 +140,16 @@
       },
     },
   };
-  </script>
+</script>
       
-  <style>
+<style scoped>
   /* Estilos específicos para el componente TaskList */
+   
   section article {
     color: black;
-    background-color: #b4c5e4;
+    background-color: white;
     border-radius: 0.2rem;
-    margin: 1rem 0;
+    margin: 0.35rem 0;
     padding: 0.25rem 0;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   }
@@ -165,10 +166,6 @@
   .container {
     width: 400px;
     margin: 0 auto;
-  }
-  
-  .delete {
-    background: #3c3744;
   }
 
   input,
@@ -193,10 +190,10 @@
   }
 
   button {
-    font-family: "NuevaFuente, sans-serif"; /* Cambio de fuente */
+    font-family: "sans-serif"; 
     text-transform: uppercase;
     outline: 0;
-    background: #3066be;
+    background: #E5B80B;
     width: 35%;
     border: 0;
     padding: 15px;
@@ -206,17 +203,20 @@
     transition: all 0.3s ease;
     cursor: pointer;
     margin-left: 3rem;
+    border-radius: 4rem;
   }
   
   .delete {
-    background: #3c3744;
+    background: #254f18;
+    background-color: #254f18;
   }
   
   button:hover {
-    background: #090c9b;
+    background: #16a294;
   }
   
   .container {
     display: block;
   }
-  </style>
+
+</style>

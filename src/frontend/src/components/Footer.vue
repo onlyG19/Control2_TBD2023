@@ -13,7 +13,7 @@
   <style scoped>
   /* Estilos específicos para el componente Footer */
   footer {
-    background-color: #3066be;
+    background-color: #254f18;
     text-align: center;
     padding: 1rem;
     color: #fbfff1;

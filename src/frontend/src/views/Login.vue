@@ -10,8 +10,6 @@
     
           </div>
 
-
-
           <input
             class="error-input"
             type="text"
@@ -230,7 +228,7 @@ body {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 .form input {
-  font-family: "Roboto", sans-serif;
+  font-family: sans-serif;
   outline: 0;
   background: #f2f2f2;
   width: 100%;
@@ -240,7 +238,7 @@ body {
   font-size: 14px;
 }
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #186826;
@@ -252,6 +250,7 @@ body {
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+  text-align: center;
 }
 .form button:hover,
 .form button:active,
@@ -280,8 +279,8 @@ body {
 }
 .title {
   /* font-family: "Roboto", sans-serif; */
-  font-family: Georgia, serif;
-  font-weight: 400;
+  font-family: sans-serif;
+  font-weight: 500;
   font-size: 35px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

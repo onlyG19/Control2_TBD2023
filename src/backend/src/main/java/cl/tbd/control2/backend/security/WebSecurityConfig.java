@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/tareas/**").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/tarea/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE,"/tarea/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/tarea").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint())
@@ -57,10 +58,6 @@ public class WebSecurityConfig {
                 .addFilter(jwtAuthenticationFilter)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
-
-
-
     }
 
 

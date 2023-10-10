@@ -2,7 +2,7 @@
     <!-- Encabezado del sitio -->
     <header>
       <!-- Cambio de fuente para "My To-Do" -->
-      <h1 class="title" style="font-family: 'NuevaFuente', sans-serif;">My To-Do</h1>
+      <h1 class="title" style="font-family: sans-serif;">My To-Do</h1>
     </header>
   </template>
   
@@ -16,7 +16,6 @@
   /* Estilos específicos para el componente Header */
   header {
     color: #fbfff1;
-    background-color: #3066be;
     font-size: 1.6rem;
     padding: 2rem;
     margin: 0;
@@ -24,7 +23,7 @@
   
   header h1 {
     text-align: center;
-    background-color: #3066be;
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.47);
   }
   </style>
