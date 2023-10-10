@@ -34,7 +34,7 @@ name: 'Footer'
 <style scoped>
 /* Estilos específicos para el componente Footer */
 footer {
-position: absolute;
+margin: 20px auto 0 auto; /* Agrega espacio de 20px arriba del componente */
 bottom: 0;
 width: 100%;
 background-color: rgba(48, 102, 190, 0.6);

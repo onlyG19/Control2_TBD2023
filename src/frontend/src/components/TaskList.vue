@@ -4,15 +4,54 @@
       <!-- Iterar a través de las tareas -->
       <article>
         <!-- Título de la tarea -->
-        <h2 v-show="!edicion" :style="taskTitleStyle">{{ title }}</h2>
-        <input v-show="edicion" :style="taskTitleStyle" type="text" v-model="title" />
+        <div>
+          
+          <h2 v-show="!edicion" :style="taskTitleStyle">Nombre: {{ title }}</h2>
+          <input v-show="edicion" :style="taskTitleStyle" type="text" v-model="title" />
+        </div>
+        
         <!-- Estado de la tarea -->
-        <p :style="taskStatusStyle">{{ status }}</p>
+        <div>
+          <h2  v-show="!edicion" :style="taskStatusStyle">Estado de la tarea: {{ status }}</h2>
+          
+           <!-- Estado de la tarea (solo se muestra en modo edición) -->
+           <div v-show="edicion">
+              <label class="input-text" for="estado">Estado de la tarea:</label>
+              <select id="estado" v-model="status">
+                <option value="Pendiente">Pendiente</option>
+                <option value="En Curso">En Curso</option>
+                <option value="Terminado">Terminado</option>
+              </select>
+           </div>
+        </div>
+        
         <!-- Fecha de la tarea si está presente -->
-        <p v-if="task.vence_tarea">{{ date }}</p>
+        <div>
+          <h2 v-show="!edicion" :style="taskStatusStyle"  v-if="task.vence_tarea">Fecha Vencimiento: {{ date }}</h2>
+          
+          <div v-show="edicion">
+  
+            <div class="form-group">
+              <div class="input-with-text">
+                <span class="input-text">Fecha de Vencimiento:</span>
+                <input type="date" placeholder="Fecha" id="date" v-model="date" required>
+              </div>
+            </div>
+
+          </div>
+          
+
+        </div>
+        
         <!-- Descripción de la tarea -->
-        <p v-show="!edicion">{{ description }}</p>
-        <textarea v-show="edicion" type="text" v-model="description" @input="autosize" ref="textarea"></textarea>
+        <div>
+          <p :style="taskStatusStyle"  v-show="!edicion">{{ description }}</p>
+          <div v-show="edicion">
+            <textarea v-show="edicion" type="text" v-model="description" @input="autosize" ref="textarea" class="input-text"></textarea>
+
+          </div>
+        </div>
+        
         <!-- Botones de edición y eliminación -->
         <div class="container">
           <button class="edit" :style="editButtonStyle" @click="edit">{{ textoBotonEdicion }}</button>
@@ -218,5 +257,15 @@
   .container {
     display: block;
   }
+
+  .input-with-text {
+  display: flex; /* Para que los elementos estén en línea */
+  align-items: center; /* Centrar verticalmente los elementos */
+}
+
+.input-text {
+  margin-right: 10px; /* Espacio entre el texto y el input */
+  margin-left: 20px;
+}
 
 </style>

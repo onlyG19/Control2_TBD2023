@@ -175,6 +175,7 @@ button {
   width: 20rem;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.47);
   border-radius: 4rem;
+  margin: 20px auto 0 auto; /* Agrega espacio de 20px arriba del componente */
 }
 
 button:hover {
