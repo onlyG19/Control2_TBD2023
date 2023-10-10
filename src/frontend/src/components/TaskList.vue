@@ -6,7 +6,7 @@
         <!-- Título de la tarea -->
         <div>
           
-          <h2 v-show="!edicion" :style="taskTitleStyle">Nombre: {{ title }}</h2>
+          <h2 class="word-wrap" v-show="!edicion" :style="taskTitleStyle">Nombre: {{ title }}</h2>
           <input v-show="edicion" :style="taskTitleStyle" type="text" v-model="title" />
         </div>
         
@@ -34,7 +34,7 @@
             <div class="form-group">
               <div class="input-with-text">
                 <span class="input-text">Fecha de Vencimiento:</span>
-                <input type="date" placeholder="Fecha" id="date" v-model="date" required>
+                <input type="date" id="date" v-model="date" required>
               </div>
             </div>
 
@@ -45,7 +45,7 @@
         
         <!-- Descripción de la tarea -->
         <div>
-          <p :style="taskStatusStyle"  v-show="!edicion">{{ description }}</p>
+          <p :style="taskStatusStyle" class="word-wrap" v-show="!edicion">{{ description }}</p>
           <div v-show="edicion">
             <textarea v-show="edicion" type="text" v-model="description" @input="autosize" ref="textarea" class="input-text"></textarea>
 
@@ -108,11 +108,13 @@
           this.task.desc_tarea = this.description;
           try {
             const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
+            
             axios.put(`http://localhost:8080/tarea/${this.task.id_tarea}`, this.task,{
               headers: {
                 Authorization: `Bearer ${token}`,
               }
             });
+            console.log(this.task.vence_tarea);
           } catch (e){
             console.log(e);
           }
@@ -124,10 +126,6 @@
     },
       eliminar (){
         if(this.edicion){
-          this.title = this.task.nombre_tarea;
-          this.status = this.task.estado_tarea;
-          this.date = this.task.vence_tarea;
-          this.description = this.task.desc_tarea;
           this.textoBotonEliminar = 'Eliminar';
           this.edicion = !this.edicion;
           this.textoBotonEdicion = 'Editar'
@@ -183,7 +181,10 @@
       
 <style scoped>
   /* Estilos específicos para el componente TaskList */
-   
+  .word-wrap {
+    overflow-wrap: break-word;
+  } 
+
   section article {
     color: black;
     background-color: white;

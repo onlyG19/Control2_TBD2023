@@ -36,12 +36,6 @@
   import axios from 'axios';
   export default {
     name: "TaskCreate",
-    props: {
-      task: {
-        type: Object,
-        required: true
-      },
-    },
     data() {
       return {
         task: {
@@ -58,13 +52,6 @@
         // Toggle the form's visibility when the button is clicked
         this.showForm = !this.showForm;
       },
-      submitForm() {
-        // Handle form submission here, e.g., send the data to a server or perform other actions.
-        console.log('Form submitted with data:', this.task);
-  
-        // Hide the form after submission
-        this.showForm = false;
-      },
       crearTarea() {
         try {
             const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
@@ -74,7 +61,7 @@
               nombre_tarea: this.task.title,
               desc_tarea: this.task.description,
               vence_tarea: this.task.date,
-              estado_tarea: "En curso",
+              estado_tarea: "Pendiente",
               id_usuario_tarea: this.task.idU
             }
             axios.post('http://localhost:8080/tarea', json,{

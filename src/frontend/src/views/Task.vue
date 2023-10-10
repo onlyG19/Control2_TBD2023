@@ -1,23 +1,32 @@
 <template>
   <div class="app-container" id="custom-scrollbar">
-    <Header />
+    <div class="content">
+      <Header />
 
-    <!-- <button @click.prevent="userGuardado">Test de almacenado de usuario</button> -->
-        <span>
-          <TaskCreate />
-        </span>
+      <!-- <button @click.prevent="userGuardado">Test de almacenado de usuario</button> -->
+          <span>
+            <TaskCreate />
+          </span>
+          <!-- Notificaciones -->
+          <div class="notifications">
+            <div v-for="(notification, index) in notifications" :key="index" class="notification">
+              {{ notification.message }}
+            </div>
+          </div> 
 
-        <span v-for="(task, index) in tasks" :key="index">
-      <TaskList :task="task"/>
-    </span>    
+          <!-- -->
+          <span v-for="(task, index) in tasks" :key="index">
+            <TaskList :task="task"/>
+          </span>
+      </div>  
     <Footer />
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import TaskList from "@/components/TaskList.vue";
-import Footer from "@/components/Footer.vue";
+import Header from "../components/Header.vue";
+import TaskList from "../components/TaskList.vue";
+import Footer from "../components/Footer.vue";
 import axios from 'axios';
 import TaskCreate from "../components/TaskCreate.vue";
 
@@ -30,9 +39,9 @@ export default {
   },
   data () {
     return {
-      //id: 10,
-      tasks: []
-    }
+      tasks: [],
+      notifications: [],
+    };
   },
 
   methods: {
@@ -62,15 +71,32 @@ export default {
             console.log('no se ha pillado el usuario, puede que no haya iniciado sesion o que haya expirado la sesion')
       }
     },
-    async crearTarea(){
-      
-    }
-  },
+    // generateNotifications() {
+    //   // Logic to generate notifications based on task due dates
+    //   const now = new Date();
+    //   const tomorrow = new Date();
+    //   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  mounted () {
-    this.get_tasks();
+    //   console.log(now);
+    //   console.log(tomorrow);
+
+    //   const dueTasks = this.tasks.filter(
+    //     (task) => task.getDate > now && task.getDate <= tomorrow
+    //   );
+
+    //   // Generate notifications for due tasks
+    //   this.notifications = dueTasks.map((task) => ({
+    //     id: task.id, // Optional ID or unique identifier
+    //     message: `Task "${task.title}" is due for tomorrow.`,
+    //     timestamp: new Date(), // Optional timestamp
+    //   }));
+    // },
+  },
+    mounted () {
+      this.get_tasks();
+      // this.generateNotifications();
+    }
   }
-};
 </script>
 
 <style scoped>
@@ -84,6 +110,10 @@ export default {
   flex-direction: column;
   display: flex;
   /* Otros estilos de diseño si es necesario */
+}
+
+.content {
+  margin-bottom: 50px;
 }
 
 #custom-scrollbar {

@@ -34,14 +34,15 @@ name: 'Footer'
 <style scoped>
 /* Estilos específicos para el componente Footer */
 footer {
-margin: 20px auto 0 auto; /* Agrega espacio de 20px arriba del componente */
+margin: auto auto 0 auto; /* Agrega espacio de 20px arriba del componente */
 bottom: 0;
 width: 100%;
-background-color: rgba(48, 102, 190, 0.6);
+background-color: rgba(37, 79, 24, 0.6);
 text-align: center;
 padding: 1rem 0; /* Reduce el espacio vertical */
 color: white;
 font-family: sans-serif; /* Cambia la fuente a sans-serif */
+margin-top: auto;
 }
 
 .footer-content {
