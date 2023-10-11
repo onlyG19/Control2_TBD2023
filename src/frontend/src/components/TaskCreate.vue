@@ -57,10 +57,11 @@
             const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
             const user = JSON.parse(sessionStorage.getItem("user"));
             this.task.idU = user.id_usuario;
+            const now = new Date();
             let json = {
               nombre_tarea: this.task.title,
               desc_tarea: this.task.description,
-              vence_tarea: this.task.date,
+              vence_tarea: new Date(`${this.task.date}T${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}-03:00`),
               estado_tarea: "Pendiente",
               id_usuario_tarea: this.task.idU
             }
@@ -68,9 +69,10 @@
               headers: {
                 Authorization: `Bearer ${token}`,
               }
-            });
+            }).then(response => {
             this.showForm = false;
             window.location.reload()
+            });
           } catch (e){
             console.log(e);
           }

@@ -1,22 +1,16 @@
 <template>
   <div class="app-container" id="custom-scrollbar">
     <div class="content">
-      <Header />
+      <Header @filtrar="filtrarTareas"/>
 
       <!-- <button @click.prevent="userGuardado">Test de almacenado de usuario</button> -->
           <span>
             <TaskCreate />
           </span>
-          <!-- Notificaciones -->
-          <div class="notifications">
-            <div v-for="(notification, index) in notifications" :key="index" class="notification">
-              {{ notification.message }}
-            </div>
-          </div> 
 
           <!-- -->
           <span v-for="(task, index) in tasks" :key="index">
-            <TaskList :task="task"/>
+            <TaskList :task="task" :filter="filter"/>
           </span>
       </div>  
     <Footer />
@@ -41,10 +35,13 @@ export default {
     return {
       tasks: [],
       notifications: [],
+      filter: '',
     };
   },
-
   methods: {
+    filtrarTareas (filtro) {
+      this.filter = filtro;
+    },
     async get_tasks(){
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
@@ -60,6 +57,7 @@ export default {
       } catch (error){
         console.log(error);
       }
+      this.generateNotifications();
     },
     async userGuardado(){
       const user = JSON.parse(sessionStorage.getItem("user"));
@@ -71,30 +69,40 @@ export default {
             console.log('no se ha pillado el usuario, puede que no haya iniciado sesion o que haya expirado la sesion')
       }
     },
-    // generateNotifications() {
-    //   // Logic to generate notifications based on task due dates
-    //   const now = new Date();
-    //   const tomorrow = new Date();
-    //   tomorrow.setDate(tomorrow.getDate() + 1);
+    generateNotifications() {
+       // Logic to generate notifications based on task due dates
+       const now = new Date();
+       const tomorrow = new Date();
+       tomorrow.setDate(tomorrow.getDate() + 2);
 
-    //   console.log(now);
-    //   console.log(tomorrow);
+       console.log(now);
+       console.log(tomorrow);
 
-    //   const dueTasks = this.tasks.filter(
-    //     (task) => task.getDate > now && task.getDate <= tomorrow
-    //   );
-
-    //   // Generate notifications for due tasks
-    //   this.notifications = dueTasks.map((task) => ({
-    //     id: task.id, // Optional ID or unique identifier
-    //     message: `Task "${task.title}" is due for tomorrow.`,
-    //     timestamp: new Date(), // Optional timestamp
-    //   }));
-    // },
+       const dueTasks = this.tasks.filter(
+         (task) => {
+           console.log(task.vence_tarea);
+           const fecha = new Date(task.vence_tarea);
+           console.log(fecha);
+           return fecha > now && fecha <= tomorrow;
+          }
+       );
+      console.log(dueTasks);
+       // Generate notifications for due tasks
+       this.notifications = dueTasks.map((task) => ({
+         id: task.id_tarea, // Optional ID or unique identifier
+         message: `Tarea "${task.nombre_tarea}" esta por terminar.`,
+         timestamp: new Date(), // Optional timestamp
+       }));
+      console.log(this.notifications);
+      let notificacion = `Tienes ${this.notifications.length} tareas por vencer:\n`;
+      this.notifications.forEach((task) => {
+        notificacion = notificacion.concat(`${task.message}\n`);
+      });
+      if (this.notifications.length > 0){alert(notificacion)}
+     },
   },
     mounted () {
       this.get_tasks();
-      // this.generateNotifications();
     }
   }
 </script>

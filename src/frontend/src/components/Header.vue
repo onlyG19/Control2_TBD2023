@@ -10,6 +10,8 @@
       <input
         type="text"
         class="search-input"
+        v-model="filter"
+        @input="filtrarTareas"
         placeholder="Buscar..."
         style="font-family: 'NuevaFuente', sans-serif"
         @keydown.enter="performSearch"
@@ -30,9 +32,18 @@
 </template>
 
 <script>
+import { defineProps } from 'vue';
 export default {
   name: "Header",
+  data (){
+    return {
+      filter: '',
+    }
+  },
   methods: {
+    filtrarTareas(){
+      this.$emit('filtrar', this.filter);
+    },
     logout() {
       // Elimina el token y la información del usuario del almacenamiento local
       localStorage.removeItem("token");

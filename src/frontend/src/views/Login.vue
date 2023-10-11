@@ -113,6 +113,7 @@ export default {
     },
 
     async registerUser() {
+      if (!(this.v$.password.$error || this.v$.username.$error)){
       const userData = {
         nombre: this.username,
         password: this.password,
@@ -143,6 +144,10 @@ export default {
         this.messageText = "Error en el registro. Por favor, inténtalo de nuevo.";
         this.messageClass = "error-message";
 
+      };
+      }else{
+        this.v$.$touch();
+        this.v$.password.$touch();
       }
     },
 

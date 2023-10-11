@@ -1,11 +1,10 @@
 <template>
     <!-- Contenedor de tareas -->
-    <section v-if="!eliminado" class="container">
+    <section v-if="!eliminado" v-show="!mostrarTarea" class="container">
       <!-- Iterar a través de las tareas -->
       <article>
         <!-- Título de la tarea -->
         <div>
-          
           <h2 class="word-wrap" v-show="!edicion" :style="taskTitleStyle">Nombre: {{ title }}</h2>
           <input v-show="edicion" :style="taskTitleStyle" type="text" v-model="title" />
         </div>
@@ -20,7 +19,7 @@
               <select id="estado" v-model="status">
                 <option value="Pendiente">Pendiente</option>
                 <option value="En Curso">En Curso</option>
-                <option value="Terminado">Terminado</option>
+               <option value="Terminado">Terminado</option>
               </select>
            </div>
         </div>
@@ -71,9 +70,13 @@
         type: Object,
         required: true
       },
+      filter: {
+        type: String
+      },
     },
     data() {
       return {
+        hola: '',
         edicion: false,
         eliminado: false,
         textoBotonEdicion: 'Editar',
@@ -144,9 +147,17 @@
           }
         }
       },
+    },
 
-  },
     computed: {
+      mostrarTarea() {
+        if(this.filter === ''){
+          return false;
+        }else {
+          return !(this.title.toLowerCase().includes(this.filter.toLowerCase())
+                  || this.description.toLowerCase().includes(this.filter.toLowerCase()))
+        }
+      },
       // Estilos de la fuente para el título de la tarea
       taskTitleStyle() {
         return {
