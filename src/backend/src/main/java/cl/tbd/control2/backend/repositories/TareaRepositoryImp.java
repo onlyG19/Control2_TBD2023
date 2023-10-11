@@ -114,4 +114,21 @@ public class TareaRepositoryImp implements TareaRepository {
             throw new RuntimeException("Error al eliminar la tarea", e);
         }
     }
+
+    @Override
+    public List<TareaEntity> getAllTareasUserbyEstado(Long userId, String estado) {
+        String sql = "SELECT * FROM tarea WHERE id_usuario_tarea = :userId AND estado_tarea= :estado";
+        List<TareaEntity> listaTareas;
+
+        try (Connection conn = sql2o.open()) {
+            return conn.createQuery(sql)
+                    .addParameter("userId", userId)
+                    .addParameter("estado", estado)
+                    .executeAndFetch(TareaEntity.class);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("Error al obtener las tareas del usuario", e);
+        }
+    }
 }

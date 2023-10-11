@@ -2,7 +2,6 @@
   <div class="app-container" id="custom-scrollbar">
     <div class="content">
       <Header />
-
       <!-- <button @click.prevent="userGuardado">Test de almacenado de usuario</button> -->
           <span>
             <TaskCreate />
@@ -49,8 +48,7 @@ export default {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
         const token = localStorage.getItem("token"); // Obtén el token JWT del almacenamiento local
-
-        console.log(user.id_usuario)
+        console.log(user.id_usuario);
         const response = await axios.get(`/tareas/${user.id_usuario}`,{
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,30 +69,9 @@ export default {
             console.log('no se ha pillado el usuario, puede que no haya iniciado sesion o que haya expirado la sesion')
       }
     },
-    // generateNotifications() {
-    //   // Logic to generate notifications based on task due dates
-    //   const now = new Date();
-    //   const tomorrow = new Date();
-    //   tomorrow.setDate(tomorrow.getDate() + 1);
-
-    //   console.log(now);
-    //   console.log(tomorrow);
-
-    //   const dueTasks = this.tasks.filter(
-    //     (task) => task.getDate > now && task.getDate <= tomorrow
-    //   );
-
-    //   // Generate notifications for due tasks
-    //   this.notifications = dueTasks.map((task) => ({
-    //     id: task.id, // Optional ID or unique identifier
-    //     message: `Task "${task.title}" is due for tomorrow.`,
-    //     timestamp: new Date(), // Optional timestamp
-    //   }));
-    // },
   },
     mounted () {
       this.get_tasks();
-      // this.generateNotifications();
     }
   }
 </script>

@@ -74,7 +74,7 @@
           } catch (e){
             console.log(e);
           }
-      }
+      },
     }
   };
 </script>
