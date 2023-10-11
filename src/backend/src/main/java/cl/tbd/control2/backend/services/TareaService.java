@@ -31,6 +31,15 @@ public class TareaService {
         return tareaRepository.getAllTareasByUserId(userId);
     }
 
+    @GetMapping("/tareas/{id}/{estado}")
+    public List<TareaEntity> obtenerTareasUByEstado(@PathVariable Long id,
+                                                    @PathVariable String estado) {
+        System.out.println("Test:");
+        System.out.println(id);
+        System.out.println(estado);
+        return tareaRepository.getAllTareasUserbyEstado(id, estado);
+    }
+
     @PostMapping("/tarea")
     public void crearTarea(@RequestBody TareaEntity tarea) {
         tareaRepository.createTarea(tarea);
