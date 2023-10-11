@@ -18,7 +18,7 @@ public class BackendApplication {
 		return new WebMvcConfigurer() {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:3030") // Cambia a la URL correcta de tu aplicación Vue.js
+						.allowedOrigins("http://localhost:3030") // URL Correspondiente al Front de Vuejs
 						.allowedMethods("*")
 						.allowedHeaders("*");
 			}
