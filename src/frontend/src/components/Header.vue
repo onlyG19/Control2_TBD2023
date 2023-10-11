@@ -10,6 +10,8 @@
       <input
         type="text"
         class="search-input"
+        v-model="filter"
+        @input="filtrarTareas"
         placeholder="Buscar..."
         style="font-family: 'NuevaFuente', sans-serif"
         @keydown.enter="performSearch"
@@ -30,9 +32,18 @@
 </template>
 
 <script>
+import { defineProps } from 'vue';
 export default {
   name: "Header",
+  data (){
+    return {
+      filter: '',
+    }
+  },
   methods: {
+    filtrarTareas(){
+      this.$emit('filtrar', this.filter);
+    },
     logout() {
       // Elimina el token y la información del usuario del almacenamiento local
       localStorage.removeItem("token");
@@ -56,7 +67,7 @@ export default {
 /* Estilos específicos para el componente Header */
 header {
   color: white;
-  background-color: rgba(48, 102, 190, 0.6);
+  background-color: #e5b90b9c;
   font-size: 1.6rem;
   padding: 2rem;
   margin: 0;
@@ -77,8 +88,7 @@ header h1 {
 }
 
 .search-bar {
-  display: flex;
-  align-items: center;
+  display: block;
 }
 
 .search-input {
@@ -91,11 +101,11 @@ header h1 {
 
 .logout-container {
   display: flex;
-  align-items: center;
+  text-align: center;
 }
 
 .logout-button {
-  background-color: #090c9b;
+  background-color: #254f18;
   color: white;
   border: none;
   border-radius: 30px;
@@ -111,6 +121,6 @@ header h1 {
 }
 
 .logout-button:hover {
-  background-color: #b4c5e4;
+  background-color: #16a294;
 }
 </style>

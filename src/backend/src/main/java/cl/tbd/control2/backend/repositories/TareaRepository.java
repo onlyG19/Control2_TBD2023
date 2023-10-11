@@ -11,4 +11,6 @@ public interface TareaRepository {
     void createTarea(TareaEntity tarea);
     void updateTarea(TareaEntity tarea);
     void deleteTarea(Long id);
+
+    List<TareaEntity> getAllTareasUserbyEstado(Long userId, String estado);
 }

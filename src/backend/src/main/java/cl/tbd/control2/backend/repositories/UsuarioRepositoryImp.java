@@ -92,4 +92,14 @@ public class UsuarioRepositoryImp implements UsuarioRepository {
             throw new RuntimeException("Error al eliminar la usuario", e);
         }
     }
+
+
+    @Override
+    public UsuarioEntity findOneByUsername(String username) {
+        String sql = "SELECT * FROM usuario WHERE nombre_usuario = :username";
+        Connection conn = sql2o.open();
+        return conn.createQuery(sql)
+                .addParameter("username", username)
+                .executeAndFetchFirst(UsuarioEntity.class);
+    }
 }

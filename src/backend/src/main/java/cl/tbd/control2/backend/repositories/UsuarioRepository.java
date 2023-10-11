@@ -10,4 +10,5 @@ public interface UsuarioRepository {
     void createUsuario(UsuarioEntity usuario);
     void updateUsuario(UsuarioEntity usuario);
     void deleteUsuario(Long id);
+    UsuarioEntity findOneByUsername(String username);
 }
